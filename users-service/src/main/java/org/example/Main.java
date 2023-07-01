@@ -11,9 +11,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws SQLException {
         UserService userService = new UserService();
-//
-//        userService.saveUser(new User("Nivaas", "Annadurai", "nannadurai@clarku.edu"));
-//        userService.saveUser(new User("Revanth", "Ravi", "daterevanth@clarku.edu"))
+
+        userService.saveUser(new User("Rick", "Sanchez", "ricksan@gmail.com"));
+        userService.saveUser(new User("Jeyanthi", "Lakshmi", "jeyalakshmi@gmail.edu"));
 
         List<User> users = userService.getUser();
         for (User user : users){
