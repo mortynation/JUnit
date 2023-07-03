@@ -9,14 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class LaptopsServiceTests {
@@ -32,6 +34,7 @@ public class LaptopsServiceTests {
 
         //Arrange
         Laptop laptop = Laptop.builder().brandName("Apple").modelName("M2 Macbook Pro").os("MacOS").build();
+        laptopsDatabase.save(Mockito.any(Laptop.class));
         when(laptopsDatabase.save(Mockito.any(Laptop.class))).thenReturn(laptop);
 
         //Act
@@ -45,13 +48,17 @@ public class LaptopsServiceTests {
     public void LaptopsService_GetAll_ReturnsLaptop(){
 
         //Arrange
-        Laptop laptop = Laptop.builder().brandName("Apple").modelName("M2 Macbook Pro").os("MacOS").build();
-        Laptop laptop1 = Laptop.builder().brandName("Lenovo").modelName("Legion").os("Ubuntu").build();
+        Laptop laptop1 = Laptop.builder().brandName("Apple").modelName("M2 Macbook Pro").os("MacOS").build();
+        Laptop laptop2 = Laptop.builder().brandName("Lenovo").modelName("Legion").os("Ubuntu").build();
+        List<Laptop> laptops = new ArrayList<>();
+        laptops.add(laptop1);
+        laptops.add(laptop2);
 
 
 //        List<Laptop> laptops = Collections.singletonList(mock(Laptop.class));
-        List<Laptop> laptops = laptopsDatabase.findAll();
+        List<Laptop> tempLaptop = laptopsDatabase.findAll();
         when(laptopsDatabase.findAll()).thenReturn(laptops);
+        //List<Laptop> resultLaptop = laptopsDatabase.findAll();
 
         //Act
         List<Laptop> laptopsTest = laptopsService.getAllLaptops();
@@ -97,12 +104,12 @@ public class LaptopsServiceTests {
     public void LaptopsService_DeleteLaptop_ReturnNothing(){
 
         //Arrange
-        Laptop laptop = Laptop.builder().brandName("Apple").modelName("M2 Macbook Pro").os("MacOS").build();
-        when(laptopsDatabase.findByLaptopId(1L)).thenReturn(laptop);
 
         //Act
-        assertAll(() -> laptopsService.deleteLaptopById(1L));
+        laptopsService.deleteLaptopById(1L);
 
+        //Assert
+        verify(laptopsDatabase).deleteById(1L);
 
     }
 
