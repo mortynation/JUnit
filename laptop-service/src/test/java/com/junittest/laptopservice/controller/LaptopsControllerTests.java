@@ -32,7 +32,7 @@ public class LaptopsControllerTests {
         when(laptopsService.saveLaptop(Mockito.any(Laptop.class))).thenReturn(laptop);
 
         //Act
-        Laptop savedLaptop = laptopsService.saveLaptop(laptop);
+        Laptop savedLaptop = laptopsController.saveLaptop(laptop);
 
         //Assert
         Assertions.assertThat(savedLaptop).isEqualTo(laptop);
